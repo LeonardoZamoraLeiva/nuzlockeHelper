@@ -1,7 +1,10 @@
 // const { types } = require("pg");
 
 let divPokemones = document.getElementById("pokemones");
+let htmlPage = document.getElementById("pagination-numbers");
+let page = 1;
 var pokemones = [];
+
 Object.defineProperty(String.prototype, "capitalize", {
   value: function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -9,7 +12,30 @@ Object.defineProperty(String.prototype, "capitalize", {
   enumerable: false,
 });
 
-let page = 2;
+let nextPage = () => {
+  if (page >= pokemones.length / 20) {
+    page = page;
+  } else {
+    page = page + 1;
+    divPokemones.replaceChildren();
+    traerPokes();
+  }
+  htmlPage.textContent = page;
+  // console.log(page);
+};
+let prevPage = () => {
+  if (page <= 1) {
+    page = page;
+  } else {
+    page = page - 1;
+    divPokemones.replaceChildren();
+    traerPokes();
+  }
+  // let htmlPage = document.getElementById("pagination-numbers");
+  htmlPage.textContent = page;
+
+  // console.log(page);
+};
 
 function recolectarPokemones(pagina) {
   return (myPromise = new Promise((resolve) => {
@@ -34,7 +60,10 @@ function recolectarPokemones(pagina) {
 }
 
 let crearTarjetas = (pokemon) => {
-  // pokemones.forEach((pokemon, index) => {
+  // let nombre = pokemon.nombre;
+  if (pokemon.nombre.includes("-")) {
+    pokemon.nombre = pokemon.nombre.replace("-", "_");
+  }
   var tarjetaPokemon = document.createElement("div");
   tarjetaPokemon.setAttribute("class", "card text-center");
   // tarjetaPokemon.setAttribute("id", `${pokemon.nombre}`);
@@ -73,8 +102,6 @@ let crearTarjetas = (pokemon) => {
   tarjetaPokemon.appendChild(elementoPokemonBody);
   tarjetaPokemon.appendChild(pokemonTypesInfo);
   divPokemones.appendChild(tarjetaPokemon);
-  // }
-  // });
 };
 
 let traerPokes = async () => {
@@ -94,8 +121,6 @@ async function filtrarPokes() {
   }
   input = document.getElementById("myFilter");
 
-  console.log(input.value);
-  console.log(pokemones);
   pokemones.forEach((pokemon) => {
     if (pokemon.nombre.includes(input.value)) {
       crearTarjetas(pokemon);
@@ -104,11 +129,14 @@ async function filtrarPokes() {
 }
 
 function infoPokemon(pokemonName) {
-  var pokemonActual = pokemonName.textContent.toLowerCase();
+  var pokemonActual = pokemonName.textContent.replace("_", "-").toLowerCase();
+  console.log(pokemonActual);
   let resistencias = [];
   var typesInfo = document.createElement("div");
 
-  let thisCard = document.getElementById(`collapse${pokemonActual}`);
+  let thisCard = document.getElementById(
+    `collapse${pokemonActual.replace("-", "_")}`
+  );
   async function recolectarResistencia() {
     let tipos = [];
     await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonActual}`).then(

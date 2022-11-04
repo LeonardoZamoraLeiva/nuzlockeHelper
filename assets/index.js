@@ -9,10 +9,12 @@ Object.defineProperty(String.prototype, "capitalize", {
   enumerable: false,
 });
 
-function recolectarPokemones() {
+let page = 2;
+
+function recolectarPokemones(pagina) {
   return (myPromise = new Promise((resolve) => {
     let pokemones = [];
-    fetch("https://pokeapi.co/api/v2/pokemon/?limit=151").then((response) =>
+    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=1200`).then((response) =>
       response.json().then((data) => {
         data.results.forEach((pokemon) => {
           let name = pokemon.name;
@@ -21,7 +23,7 @@ function recolectarPokemones() {
 
           pokemones.push({ nombre: name, foto: urlphoto });
 
-          if (pokemones.length == 150) {
+          if (pokemones.length == 1100) {
             resolve(pokemones);
             return pokemones;
           }
@@ -30,68 +32,75 @@ function recolectarPokemones() {
     );
   }));
 }
+
+let crearTarjetas = (pokemon) => {
+  // pokemones.forEach((pokemon, index) => {
+  var tarjetaPokemon = document.createElement("div");
+  tarjetaPokemon.setAttribute("class", "card text-center");
+  // tarjetaPokemon.setAttribute("id", `${pokemon.nombre}`);
+  var photoPokemon = document.createElement("img");
+  photoPokemon.setAttribute("class", "card-img-top");
+  photoPokemon.setAttribute("src", pokemon.foto);
+
+  var elementoPokemonBody = document.createElement("div");
+  elementoPokemonBody.setAttribute("class", "card-body");
+
+  var pokemonNombre = document.createElement("p");
+  pokemonNombre.setAttribute("class", "card-header card-title");
+  pokemonNombre.setAttribute("id", `${pokemon.nombre}`);
+  pokemonNombre.textContent = pokemon.nombre.capitalize();
+
+  var pokemonInfo = document.createElement("button");
+  pokemonInfo.setAttribute("class", "btn btn-info");
+  pokemonInfo.setAttribute("data-bs-target", `#collapse${pokemon.nombre}`);
+  pokemonInfo.setAttribute("type", "button");
+  pokemonInfo.setAttribute("data-bs-toggle", "collapse");
+  pokemonInfo.setAttribute("aria-expanded", false);
+  pokemonInfo.setAttribute("aria-controls", `collapse${pokemon.nombre}`);
+  pokemonInfo.setAttribute("onClick", `infoPokemon(${pokemon.nombre})`);
+
+  pokemonInfo.textContent = "Info";
+
+  var pokemonTypesInfo = document.createElement("div");
+  pokemonTypesInfo.setAttribute("class", "collapse");
+  pokemonTypesInfo.setAttribute("id", `collapse${pokemon.nombre}`);
+
+  elementoPokemonBody.appendChild(pokemonNombre);
+  elementoPokemonBody.appendChild(photoPokemon);
+  elementoPokemonBody.appendChild(pokemonInfo);
+  elementoPokemonBody.appendChild(pokemonTypesInfo);
+
+  tarjetaPokemon.appendChild(elementoPokemonBody);
+  tarjetaPokemon.appendChild(pokemonTypesInfo);
+  divPokemones.appendChild(tarjetaPokemon);
+  // }
+  // });
+};
+
 let traerPokes = async () => {
-  pokemones = await recolectarPokemones();
-  pokemones.forEach((pokemon) => {
-    var resistencias = [];
-    var tarjetaPokemon = document.createElement("div");
-    tarjetaPokemon.setAttribute("class", "card text-center");
-    // tarjetaPokemon.setAttribute("id", `${pokemon.nombre}`);
-    var photoPokemon = document.createElement("img");
-    photoPokemon.setAttribute("class", "card-img-top");
-    photoPokemon.setAttribute("src", pokemon.foto);
-
-    var elementoPokemonBody = document.createElement("div");
-    elementoPokemonBody.setAttribute("class", "card-body");
-
-    var pokemonNombre = document.createElement("p");
-    pokemonNombre.setAttribute("class", "card-header card-title");
-    pokemonNombre.setAttribute("id", `${pokemon.nombre}`);
-    pokemonNombre.textContent = pokemon.nombre.capitalize();
-
-    var pokemonInfo = document.createElement("button");
-    pokemonInfo.setAttribute("class", "btn btn-info");
-    pokemonInfo.setAttribute("data-bs-target", `#collapse${pokemon.nombre}`);
-    pokemonInfo.setAttribute("type", "button");
-    pokemonInfo.setAttribute("data-bs-toggle", "collapse");
-    pokemonInfo.setAttribute("aria-expanded", false);
-    pokemonInfo.setAttribute("aria-controls", `collapse${pokemon.nombre}`);
-    pokemonInfo.setAttribute("onClick", `infoPokemon(${pokemon.nombre})`);
-
-    pokemonInfo.textContent = "Info";
-
-    var pokemonTypesInfo = document.createElement("div");
-    pokemonTypesInfo.setAttribute("class", "collapse");
-    pokemonTypesInfo.setAttribute("id", `collapse${pokemon.nombre}`);
-
-    elementoPokemonBody.appendChild(pokemonNombre);
-    elementoPokemonBody.appendChild(photoPokemon);
-    elementoPokemonBody.appendChild(pokemonInfo);
-    elementoPokemonBody.appendChild(pokemonTypesInfo);
-
-    tarjetaPokemon.appendChild(elementoPokemonBody);
-    tarjetaPokemon.appendChild(pokemonTypesInfo);
-    divPokemones.appendChild(tarjetaPokemon);
+  pokemones = await recolectarPokemones(page);
+  pokemones.forEach((pokemon, index) => {
+    if (index < page * 20 && index > page * 20 - 21) {
+      crearTarjetas(pokemon);
+    }
   });
 };
 traerPokes();
 
-function filtrarPokes() {
-  var input, filter, cards, cardContainer, title, i;
-  input = document.getElementById("myFilter");
-  console.log(input.value);
-  filter = input.value.toUpperCase();
-  cardContainer = document.getElementById("pokemones");
-  cards = cardContainer.getElementsByClassName("card");
-  for (i = 0; i < cards.length; i++) {
-    title = cards[i].querySelector(".card-body .card-title");
-    console.log(title);
-    if (title.innerText.toUpperCase().indexOf(filter) > -1) {
-      cards[i].style.display = "";
-    } else {
-      cards[i].style.display = "none";
-    }
+async function filtrarPokes() {
+  let mainCard = document.getElementById("pokemones");
+  if (mainCard.hasChildNodes) {
+    mainCard.replaceChildren();
   }
+  input = document.getElementById("myFilter");
+
+  console.log(input.value);
+  console.log(pokemones);
+  pokemones.forEach((pokemon) => {
+    if (pokemon.nombre.includes(input.value)) {
+      crearTarjetas(pokemon);
+    }
+  });
 }
 
 function infoPokemon(pokemonName) {

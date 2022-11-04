@@ -57,8 +57,8 @@ let nextPage = () => {
     traerPokes();
   }
   htmlPage.textContent = page;
-  // console.log(page);
 };
+
 let prevPage = () => {
   if (page <= 1) {
     page = page;
@@ -127,7 +127,7 @@ let crearTarjetas = (pokemon) => {
   pokemonInfo.textContent = "Info";
 
   var pokemonTypesInfo = document.createElement("div");
-  pokemonTypesInfo.setAttribute("class", "collapse");
+  pokemonTypesInfo.setAttribute("class", "collapse mb-3");
   pokemonTypesInfo.setAttribute("id", `collapse${pokemon.nombre}`);
 
   elementoPokemonBody.appendChild(pokemonNombre);
@@ -156,7 +156,6 @@ async function filtrarPokes() {
     mainCard.replaceChildren();
   }
   input = document.getElementById("myFilter");
-
   pokemones.forEach((pokemon) => {
     if (pokemon.nombre.includes(input.value)) {
       crearTarjetas(pokemon);
@@ -166,6 +165,12 @@ async function filtrarPokes() {
 
 async function infoPokemon(pokemonName) {
   var pokemonActual = pokemonName.textContent.replace("_", "-").toLowerCase();
+  var tiposElement = document.createElement("div");
+  tiposElement.setAttribute("class", "mb-2 tipos");
+
+  var sufreMuchoElement = document.createElement("div");
+  var resisteMuchoElement = document.createElement("div");
+
   var sufreElement = document.createElement("div");
   var resisteElement = document.createElement("div");
   var immuneElement = document.createElement("div");
@@ -197,13 +202,19 @@ async function infoPokemon(pokemonName) {
   console.log(resistente);
   console.log(immune);
 
-  sufreElement.textContent = `sufre x2 = ${vulnerable}`;
-  resisteElement.textContent = `sufre 1/2 = ${resistente}`;
-  immuneElement.textContent = `inmune = ${immune}`;
+  sufreElement.textContent = `Sufre x2 = ${vulnerable}`;
+  resisteElement.textContent = `Sufre 1/2 = ${resistente}`;
+  immuneElement.textContent = `Inmune = ${immune}`;
+  if (tipos.length > 1) {
+    tiposElement.textContent = `${tipos[0].capitalize()} - ${tipos[1].capitalize()}`;
+  } else {
+    tiposElement.textContent = `${tipos[0].capitalize()}`;
+  }
 
   typesInfo.setAttribute("class", "my-3");
   if (thisCard.hasChildNodes()) {
     thisCard.removeChild();
+    thisCard.appendChild(tiposElement);
     if (vulnerable.length > 0) {
       thisCard.appendChild(sufreElement);
     }
@@ -214,6 +225,7 @@ async function infoPokemon(pokemonName) {
       thisCard.appendChild(immuneElement);
     }
   } else {
+    thisCard.appendChild(tiposElement);
     if (vulnerable.length > 0) {
       thisCard.appendChild(sufreElement);
     }

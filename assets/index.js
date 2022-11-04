@@ -1,3 +1,5 @@
+// const { types } = require("pg");
+
 let divPokemones = document.getElementById("pokemones");
 var pokemones = [];
 
@@ -35,19 +37,37 @@ let traerPokes = async () => {
     var elementoPokemonBody = document.createElement("div");
     elementoPokemonBody.setAttribute("class", "card-body");
 
-    var pokemonNombre = document.createElement("p");
-    pokemonNombre.setAttribute("class", "card-title");
+    var pokemonNombre = document.createElement("h3");
+    pokemonNombre.setAttribute("class", "card-header");
     pokemonNombre.textContent = pokemon.nombre;
 
     var pokemonInfo = document.createElement("button");
-    pokemonInfo.setAttribute("class", "card-title btn btn-info ");
+    pokemonInfo.setAttribute("class", "btn btn-info");
+    pokemonInfo.setAttribute("data-bs-target", `#collapse${pokemon.nombre}`);
+    pokemonInfo.setAttribute("type", "button");
+    pokemonInfo.setAttribute("data-bs-toggle", "collapse");
+    pokemonInfo.setAttribute("aria-expanded", false);
+    pokemonInfo.setAttribute("aria-controls", `collapse${pokemon.nombre}`);
+
     pokemonInfo.textContent = "Info";
 
-    elementoPokemonBody.appendChild(pokemonNombre);
+    var pokemonTypesInfo = document.createElement("div");
+    pokemonTypesInfo.setAttribute("class", "collapse");
+    pokemonTypesInfo.setAttribute("id", `collapse${pokemon.nombre}`);
+
+    var typesInfo = document.createElement("div");
+    typesInfo.setAttribute("class", "card card-body");
+    typesInfo.textContent = "Esto por ahora";
+
+    pokemonTypesInfo.appendChild(typesInfo);
+
+    tarjetaPokemon.appendChild(pokemonNombre);
     elementoPokemonBody.appendChild(pokemonInfo);
+    elementoPokemonBody.appendChild(pokemonTypesInfo);
 
     tarjetaPokemon.appendChild(photoPokemon);
     tarjetaPokemon.appendChild(elementoPokemonBody);
+    tarjetaPokemon.appendChild(pokemonTypesInfo);
     divPokemones.appendChild(tarjetaPokemon);
   });
 };
@@ -67,4 +87,8 @@ function filtrarPokes() {
       cards[i].style.display = "none";
     }
   }
+}
+
+function infoPokemon(pokemonName) {
+  var pokemonActual = document.getElementById("myFilter");
 }

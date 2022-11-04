@@ -5,3 +5,9 @@
 .row {
   height: 10%;
 }
+
+#tituloPokemon {
+  font-size: 0.8em;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

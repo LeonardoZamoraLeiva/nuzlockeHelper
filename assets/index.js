@@ -1,9 +1,45 @@
-// const { types } = require("pg");
-
 let divPokemones = document.getElementById("pokemones");
 let htmlPage = document.getElementById("pagination-numbers");
 let page = 1;
 var pokemones = [];
+
+var damageRelations = [];
+
+let allTypes = async () => {
+  damageRelations = [];
+  for (let i = 1; i < 19; i++) {
+    await fetch(`https://pokeapi.co/api/v2/type/${i}`).then((response) => {
+      response.json().then((data) => {
+        let sufferHalf = [];
+        let sufferDouble = [];
+        let immune = [];
+        data.damage_relations.half_damage_from.forEach((tipo) => {
+          sufferHalf.push(tipo.name);
+        });
+        data.damage_relations.double_damage_from.forEach((tipo) => {
+          sufferDouble.push(tipo.name);
+        });
+        data.damage_relations.no_damage_from.forEach((tipo) => {
+          immune.push(tipo.name);
+        });
+        let thisType = {
+          tipo: data.name,
+          sufferHalf: sufferHalf,
+          sufferDouble: sufferDouble,
+          immune: immune,
+        };
+        damageRelations.push(thisType);
+      });
+    });
+  }
+  return damageRelations;
+};
+
+let takeAllTypes = async () => {
+  damageRelations = await allTypes();
+  // console.log(damageRelations);
+};
+takeAllTypes();
 
 Object.defineProperty(String.prototype, "capitalize", {
   value: function () {
@@ -128,38 +164,50 @@ async function filtrarPokes() {
   });
 }
 
-function infoPokemon(pokemonName) {
+async function infoPokemon(pokemonName) {
   var pokemonActual = pokemonName.textContent.replace("_", "-").toLowerCase();
-  console.log(pokemonActual);
-  let resistencias = [];
   var typesInfo = document.createElement("div");
-
   let thisCard = document.getElementById(
     `collapse${pokemonActual.replace("-", "_")}`
   );
-  async function recolectarResistencia() {
-    let tipos = [];
-    await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonActual}`).then(
-      (response) =>
-        response.json().then((data) => {
-          data.types.forEach((tipo) => {
-            tipos.push(tipo.type.name);
-          });
-        })
-    );
-    return tipos;
-  }
-  let recolectarTipos = async () => {
-    let tipos = await recolectarResistencia();
-    tipos.forEach((tipo) => {
-      resistencias.push(tipo);
-    });
-    typesInfo.setAttribute("class", "mb-3");
-    typesInfo.textContent = `${resistencias}`;
-    thisCard.appendChild(typesInfo);
-  };
+  let tipos = await recolectarTipos(pokemonActual);
 
-  if (!thisCard.hasChildNodes()) {
-    recolectarTipos();
+  console.log(damageRelations);
+  let vulnerable = [];
+  let resistente = [];
+  let immune = [];
+
+  damageRelations.forEach((tipo) => {
+    tipos.forEach((esteTipo) => {
+      if (esteTipo == tipo.tipo) {
+        vulnerable.push(tipo.sufferDouble);
+        resistente.push(tipo.sufferHalf);
+        immune.push(tipo.immune);
+      }
+    });
+  });
+  console.log(vulnerable);
+  console.log(resistente);
+  console.log(immune);
+  typesInfo.textContent = `sufre x2: ${vulnerable}    resiste (1/2):${resistente}`;
+  typesInfo.setAttribute("class", "my-3");
+  if (thisCard.hasChildNodes()) {
+    thisCard.removeChild();
+    thisCard.appendChild(typesInfo);
+  } else {
+    thisCard.appendChild(typesInfo);
   }
 }
+
+let recolectarTipos = async (pokemonActual) => {
+  let tipos = [];
+  await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonActual}`).then(
+    (response) =>
+      response.json().then((data) => {
+        data.types.forEach((tipo) => {
+          tipos.push(tipo.type.name);
+        });
+      })
+  );
+  return tipos;
+};

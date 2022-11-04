@@ -166,6 +166,10 @@ async function filtrarPokes() {
 
 async function infoPokemon(pokemonName) {
   var pokemonActual = pokemonName.textContent.replace("_", "-").toLowerCase();
+  var sufreElement = document.createElement("div");
+  var resisteElement = document.createElement("div");
+  var immuneElement = document.createElement("div");
+
   var typesInfo = document.createElement("div");
   let thisCard = document.getElementById(
     `collapse${pokemonActual.replace("-", "_")}`
@@ -186,16 +190,39 @@ async function infoPokemon(pokemonName) {
       }
     });
   });
+  vulnerable = vulnerable.flat(1);
+  resistente = resistente.flat(1);
+  immune = immune.flat(1);
   console.log(vulnerable);
   console.log(resistente);
   console.log(immune);
-  typesInfo.textContent = `sufre x2: ${vulnerable}    resiste (1/2):${resistente}`;
+
+  sufreElement.textContent = `sufre x2 = ${vulnerable}`;
+  resisteElement.textContent = `sufre 1/2 = ${resistente}`;
+  immuneElement.textContent = `inmune = ${immune}`;
+
   typesInfo.setAttribute("class", "my-3");
   if (thisCard.hasChildNodes()) {
     thisCard.removeChild();
-    thisCard.appendChild(typesInfo);
+    if (vulnerable.length > 0) {
+      thisCard.appendChild(sufreElement);
+    }
+    if (resistente.length > 0) {
+      thisCard.appendChild(resisteElement);
+    }
+    if (immune.length > 0) {
+      thisCard.appendChild(immuneElement);
+    }
   } else {
-    thisCard.appendChild(typesInfo);
+    if (vulnerable.length > 0) {
+      thisCard.appendChild(sufreElement);
+    }
+    if (resistente.length > 0) {
+      thisCard.appendChild(resisteElement);
+    }
+    if (immune.length > 0) {
+      thisCard.appendChild(immuneElement);
+    }
   }
 }
 

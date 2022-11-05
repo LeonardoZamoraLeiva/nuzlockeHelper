@@ -1,5 +1,7 @@
 let divPokemones = document.getElementById("pokemones");
 let htmlPage = document.getElementById("pagination-numbers");
+var parentContainer = document.getElementById("parentContainer");
+var hermanoContainer = document.getElementById("hermanoContainer");
 let page = 1;
 var pokemones = [];
 
@@ -95,6 +97,26 @@ function recolectarPokemones(pagina) {
   }));
 }
 
+function makeUL(array, efecto) {
+  var efecto = document.createElement("p");
+  efecto.textContent = efecto;
+  var list = document.createElement("ul");
+  list.setAttribute("class", "efectos");
+  for (var i = 0; i < array.length; i++) {
+    // Create the list item:
+    var item = document.createElement("li");
+
+    // Set its contents:
+    item.appendChild(document.createTextNode(array[i].capitalize()));
+
+    // Add it to the list:
+    list.appendChild(item);
+  }
+
+  // Finally, return the constructed list:
+  return list;
+}
+
 let crearTarjetas = (pokemon) => {
   // let nombre = pokemon.nombre;
   if (pokemon.nombre.includes("-")) {
@@ -102,7 +124,7 @@ let crearTarjetas = (pokemon) => {
   }
   var tarjetaPokemon = document.createElement("div");
   tarjetaPokemon.setAttribute("class", "card text-center");
-  // tarjetaPokemon.setAttribute("id", `${pokemon.nombre}`);
+  tarjetaPokemon.setAttribute("id", `${pokemon.nombre + pokemon.nombre}`);
   var photoPokemon = document.createElement("img");
   photoPokemon.setAttribute("class", "card-img-top");
   photoPokemon.setAttribute("src", pokemon.foto);
@@ -111,7 +133,7 @@ let crearTarjetas = (pokemon) => {
   elementoPokemonBody.setAttribute("class", "card-body");
 
   var pokemonNombre = document.createElement("p");
-  pokemonNombre.setAttribute("class", "card-header card-title");
+  pokemonNombre.setAttribute("class", "card-header card-title tituloPokemon");
   pokemonNombre.setAttribute("id", `${pokemon.nombre}`);
   pokemonNombre.textContent = pokemon.nombre.capitalize();
 
@@ -133,7 +155,7 @@ let crearTarjetas = (pokemon) => {
   elementoPokemonBody.appendChild(pokemonNombre);
   elementoPokemonBody.appendChild(photoPokemon);
   elementoPokemonBody.appendChild(pokemonInfo);
-  elementoPokemonBody.appendChild(pokemonTypesInfo);
+  parentContainer.appendChild(pokemonTypesInfo);
 
   tarjetaPokemon.appendChild(elementoPokemonBody);
   tarjetaPokemon.appendChild(pokemonTypesInfo);
@@ -165,6 +187,10 @@ async function filtrarPokes() {
 
 async function infoPokemon(pokemonName) {
   var pokemonActual = pokemonName.textContent.replace("_", "-").toLowerCase();
+
+  var tarjetaActual = document.getElementById(pokemonActual + pokemonActual);
+  console.log(tarjetaActual);
+
   var tiposElement = document.createElement("div");
   tiposElement.setAttribute("class", "mb-2 tipos");
 
@@ -172,8 +198,11 @@ async function infoPokemon(pokemonName) {
   var resisteMuchoElement = document.createElement("div");
 
   var sufreElement = document.createElement("div");
+  sufreElement.setAttribute("id", "resistencias");
   var resisteElement = document.createElement("div");
+  resisteElement.setAttribute("id", "resistencias");
   var immuneElement = document.createElement("div");
+  immuneElement.setAttribute("id", "resistencias");
 
   var typesInfo = document.createElement("div");
   let thisCard = document.getElementById(
@@ -198,42 +227,56 @@ async function infoPokemon(pokemonName) {
   vulnerable = vulnerable.flat(1);
   resistente = resistente.flat(1);
   immune = immune.flat(1);
-  console.log(vulnerable);
-  console.log(resistente);
-  console.log(immune);
 
-  sufreElement.textContent = `Sufre x2 = ${vulnerable}`;
-  resisteElement.textContent = `Sufre 1/2 = ${resistente}`;
-  immuneElement.textContent = `Inmune = ${immune}`;
+  if (vulnerable.length > 0) {
+    let sufrePar = document.createElement("h1");
+    sufrePar.setAttribute("class", "efectosTitle");
+    sufrePar.textContent = "Efectivo (x2)";
+    sufreElement.appendChild(sufrePar);
+    sufreElement.appendChild(makeUL(vulnerable));
+  }
+
+  if (resistente.length > 0) {
+    let resistePar = document.createElement("h1");
+    resistePar.setAttribute("class", "efectosTitle");
+    // resistePar.textContent = "Poco efectivo (x2)";
+    resistePar.textContent = "Poco efectivo (1/2)";
+    resisteElement.appendChild(resistePar);
+    resisteElement.appendChild(makeUL(resistente));
+  }
+
+  if (immune.length > 0) {
+    let immunePar = document.createElement("h1");
+    immunePar.setAttribute("class", "efectosTitle");
+    immunePar.textContent = "Immune";
+    immuneElement.appendChild(immunePar);
+    immuneElement.appendChild(makeUL(immune));
+  }
+
   if (tipos.length > 1) {
     tiposElement.textContent = `${tipos[0].capitalize()} - ${tipos[1].capitalize()}`;
   } else {
     tiposElement.textContent = `${tipos[0].capitalize()}`;
   }
 
-  typesInfo.setAttribute("class", "my-3");
-  if (thisCard.hasChildNodes()) {
-    thisCard.removeChild();
-    thisCard.appendChild(tiposElement);
-    if (vulnerable.length > 0) {
-      thisCard.appendChild(sufreElement);
-    }
-    if (resistente.length > 0) {
-      thisCard.appendChild(resisteElement);
-    }
-    if (immune.length > 0) {
-      thisCard.appendChild(immuneElement);
-    }
+  typesInfo.setAttribute("class", "my-3 text-center");
+
+  if (parentContainer.contains(tarjetaActual)) {
+    divPokemones.appendChild(tarjetaActual);
+    hermanoContainer.replaceChildren("");
   } else {
-    thisCard.appendChild(tiposElement);
+    tarjetaActual.classList.add("col-12");
+    parentContainer.appendChild(tarjetaActual);
+
+    hermanoContainer.appendChild(tiposElement);
     if (vulnerable.length > 0) {
-      thisCard.appendChild(sufreElement);
+      hermanoContainer.appendChild(sufreElement);
     }
     if (resistente.length > 0) {
-      thisCard.appendChild(resisteElement);
+      hermanoContainer.appendChild(resisteElement);
     }
     if (immune.length > 0) {
-      thisCard.appendChild(immuneElement);
+      hermanoContainer.appendChild(immuneElement);
     }
   }
 }

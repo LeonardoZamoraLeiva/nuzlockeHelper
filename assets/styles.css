@@ -6,8 +6,8 @@
   height: 10%;
 }
 
-#tituloPokemon {
-  font-size: 0.8em;
+.tituloPokemon {
+  font-size: 1.2rem;
   font-weight: bold;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
@@ -15,4 +15,22 @@
 .tipos {
   font-weight: bold;
   background-color: beige;
+  font-size: 2em;
+}
+.efectos {
+  /* font-weight: bold;
+  background-color: beige; */
+  font-size: 0.5em;
+}
+.efectosTitle {
+  /* /* font-weight: bold; */
+  font-size: 1em;
+}
+
+#resistencias {
+  font-size: 2em;
+}
+
+ul {
+  list-style-type: none;
 }

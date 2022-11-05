@@ -97,16 +97,19 @@ function recolectarPokemones(pagina) {
   }));
 }
 
-function makeUL(array, efecto) {
-  var efecto = document.createElement("p");
-  efecto.textContent = efecto;
+function makeUL(array) {
   var list = document.createElement("ul");
   list.setAttribute("class", "efectos");
   for (var i = 0; i < array.length; i++) {
+    var imgTipo = document.createElement("img");
+    imgTipo.setAttribute("src", `assets/icons/${array[i]}.svg`);
+    imgTipo.setAttribute("class", `${array[i]} icon`);
     // Create the list item:
     var item = document.createElement("li");
+    item.setAttribute("class", "justify-content-between");
 
     // Set its contents:
+    item.appendChild(imgTipo);
     item.appendChild(document.createTextNode(array[i].capitalize()));
 
     // Add it to the list:
@@ -224,14 +227,14 @@ async function infoPokemon(pokemonName) {
       }
     });
   });
-  vulnerable = vulnerable.flat(1);
-  resistente = resistente.flat(1);
-  immune = immune.flat(1);
+  vulnerable = vulnerable.flat(1).sort();
+  resistente = resistente.flat(1).sort();
+  immune = immune.flat(1).sort();
 
   if (vulnerable.length > 0) {
     let sufrePar = document.createElement("h1");
     sufrePar.setAttribute("class", "efectosTitle");
-    sufrePar.textContent = "Efectivo (x2)";
+    sufrePar.textContent = "Super effective (x1.6)";
     sufreElement.appendChild(sufrePar);
     sufreElement.appendChild(makeUL(vulnerable));
   }
@@ -240,7 +243,7 @@ async function infoPokemon(pokemonName) {
     let resistePar = document.createElement("h1");
     resistePar.setAttribute("class", "efectosTitle");
     // resistePar.textContent = "Poco efectivo (x2)";
-    resistePar.textContent = "Poco efectivo (1/2)";
+    resistePar.textContent = "Not very effective (x0.625)";
     resisteElement.appendChild(resistePar);
     resisteElement.appendChild(makeUL(resistente));
   }
@@ -248,7 +251,7 @@ async function infoPokemon(pokemonName) {
   if (immune.length > 0) {
     let immunePar = document.createElement("h1");
     immunePar.setAttribute("class", "efectosTitle");
-    immunePar.textContent = "Immune";
+    immunePar.textContent = "Immunity";
     immuneElement.appendChild(immunePar);
     immuneElement.appendChild(makeUL(immune));
   }

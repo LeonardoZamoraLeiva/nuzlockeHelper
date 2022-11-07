@@ -239,7 +239,6 @@ async function infoPokemon(pokemonName) {
   var typesInfo = document.createElement("div");
   let tipos = await recolectarTipos(pokemonActual.replace(" ", "-"));
 
-  // console.log(damageRelations);
   let vulnerable = [];
   let resistente = [];
   let immune = [];
@@ -433,7 +432,6 @@ let recolectarTipos = async (pokemonActual) => {
 
 let cerrarTarjeta = async (pokemonName) => {
   var pokemonActual = pokemonName.textContent.toLowerCase();
-  var tarjetaActual = document.getElementById(pokemonActual);
   let cerrarTarjeta = document.getElementById(
     `${pokemonActual.replace(" ", "_")}cerrar`
   );

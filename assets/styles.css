@@ -17,27 +17,31 @@
   font-weight: bold;
   background-color: beige;
   font-size: 2em;
+  /* margin: 20; */
 }
 .efectos {
+  justify-content: space-evenly;
   /* font-weight: bold;
   background-color: beige; */
   font-size: 1em;
+  display: flex;
 }
 .efectosTitle {
   /* /* font-weight: bold; */
-  font-size: 1em;
+  font-size: 1.5em;
   /* margin: 1.5em; */
 
   border-style: solid;
 }
 
 #resistencias {
+  justify-content: center;
   background-color: #d8dad7;
   border-style: solid;
   opacity: 90%;
   /* border-radius: 10%; */
   font-size: 1em;
-  height: 5.5rem;
+  height: 15%;
   border-color: #000000;
   border-width: 1px;
   margin: 10px;
@@ -49,10 +53,11 @@ ul {
 
 .icon {
   border-radius: 100%;
-  height: 30px;
-  width: 30px;
-  margin-right: 0.8em;
-  /* margin: 0.1em; */
+  height: 40px;
+  width: 40px;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-top: 10%;
   transition: 200ms all;
   /* align-items: flex-start; */
   justify-items: center;
@@ -161,8 +166,8 @@ ul {
 }
 
 ul {
-  columns: 1;
-  -webkit-columns: 5;
+  columns: 3;
+  -webkit-columns: 3;
   -moz-columns: 3;
 }
 

@@ -213,7 +213,7 @@ async function filtrarPokes() {
 }
 
 async function infoPokemon(pokemonName) {
-  console.log(pokemonName);
+  // console.log(pokemonName);
   var pokemonActual = pokemonName.textContent.replace(" ", "_").toLowerCase();
   // .replace("_", "-").toLowerCase();
 
@@ -224,7 +224,10 @@ async function infoPokemon(pokemonName) {
   tiposElement.setAttribute("class", "mb-2 tipos");
 
   var sufreMuchoElement = document.createElement("div");
+  sufreMuchoElement.setAttribute("id", "resistencias");
+
   var resisteMuchoElement = document.createElement("div");
+  resisteMuchoElement.setAttribute("id", "resistencias");
 
   var sufreElement = document.createElement("div");
   sufreElement.setAttribute("id", "resistencias");
@@ -236,7 +239,7 @@ async function infoPokemon(pokemonName) {
   var typesInfo = document.createElement("div");
   let tipos = await recolectarTipos(pokemonActual.replace(" ", "-"));
 
-  console.log(damageRelations);
+  // console.log(damageRelations);
   let vulnerable = [];
   let resistente = [];
   let immune = [];
@@ -253,11 +256,82 @@ async function infoPokemon(pokemonName) {
   vulnerable = vulnerable.flat(1).sort();
   resistente = resistente.flat(1).sort();
   immune = immune.flat(1).sort();
+  var debilidad_maxima = [];
+  var resistencia_maxima;
+
+  let findDuplicates = (arr) =>
+    arr.filter((item, index) => arr.indexOf(item) != index);
+
+  if (findDuplicates(vulnerable)) {
+    var duplicados = findDuplicates(vulnerable);
+    debilidad_maxima = [...new Set(findDuplicates(vulnerable))];
+
+    for (let i = 0; i < duplicados.length; i++) {
+      vulnerable = vulnerable.filter((item) => item != duplicados[i]);
+    }
+  }
+
+  if (findDuplicates(resistente)) {
+    var duplicados = findDuplicates(resistente);
+    resistencia_maxima = [...new Set(findDuplicates(resistente))];
+    for (let i = 0; i < duplicados.length; i++) {
+      resistente = resistente.filter((item) => item != duplicados[i]);
+    }
+  }
+
+  // const filteredArray = resistente.filter((value) =>
+  //   vulnerable.includes(value)
+  // );
+
+  let filterEffects = (arr1, arr2) => {
+    const filteredArray = arr1.filter((value) => arr2.includes(value));
+    console.log(filteredArray);
+    if (arr1 == immune) {
+      console.log(immune);
+    } else {
+      for (var i = 0; i < filteredArray.length; i++) {
+        for (var j = 0; j < arr1.length; j++) {
+          if (arr1[j] === filteredArray[i]) {
+            arr1.splice(j, 1);
+          }
+        }
+      }
+    }
+    for (var i = 0; i < filteredArray.length; i++) {
+      for (var j = 0; j < arr2.length; j++) {
+        if (arr2[j] === filteredArray[i]) {
+          arr2.splice(j, 1);
+        }
+      }
+    }
+  };
+
+  filterEffects(resistente, vulnerable);
+  console.log(resistente);
+  console.log(immune);
+  filterEffects(immune, vulnerable);
+
+  // console.log(filteredArray);
+  // console.log(resistente);
+  // console.log(resistencia_maxima);
+  // console.log(vulnerable);
+  // console.log(debilidad_maxima);
+
+  // var sufreMuchoElement = document.createElement("div");
+  // var resisteMuchoElement
+
+  if (debilidad_maxima.length > 0) {
+    let sufreMucho = document.createElement("h1");
+    sufreMucho.setAttribute("class", "efectosTitle");
+    sufreMucho.textContent = "Super effective (x4)";
+    sufreMuchoElement.appendChild(sufreMucho);
+    sufreMuchoElement.appendChild(makeUL(debilidad_maxima));
+  }
 
   if (vulnerable.length > 0) {
     let sufrePar = document.createElement("h1");
     sufrePar.setAttribute("class", "efectosTitle");
-    sufrePar.textContent = "Super effective (x1.6)";
+    sufrePar.textContent = "Super effective (x2)";
     sufreElement.appendChild(sufrePar);
     sufreElement.appendChild(makeUL(vulnerable));
   }
@@ -266,9 +340,16 @@ async function infoPokemon(pokemonName) {
     let resistePar = document.createElement("h1");
     resistePar.setAttribute("class", "efectosTitle");
     // resistePar.textContent = "Poco efectivo (x2)";
-    resistePar.textContent = "Not very effective (x0.625)";
+    resistePar.textContent = "Not very effective (x0.5)";
     resisteElement.appendChild(resistePar);
     resisteElement.appendChild(makeUL(resistente));
+  }
+  if (debilidad_maxima.length > 0) {
+    let resisteMucho = document.createElement("h1");
+    resisteMucho.setAttribute("class", "efectosTitle");
+    resisteMucho.textContent = "Not very effective (x1/4)";
+    resisteMuchoElement.appendChild(resisteMucho);
+    resisteMuchoElement.appendChild(makeUL(resistencia_maxima));
   }
 
   if (immune.length > 0) {
@@ -290,16 +371,22 @@ async function infoPokemon(pokemonName) {
   let cerrarTarjeta = document.getElementById(
     `${pokemonActual.replace(" ", "_")}cerrar`
   );
-  // console.log(pokemonActual.replace(" ", "_"));
-  // console.log(cerrarTarjeta);
   cerrarTarjeta.classList.remove("hidden");
 
   if (parentContainer.hasChildNodes()) {
+    console.log(resistencia_maxima);
+
     parentContainer.replaceChildren("");
     hermanoContainer.replaceChildren("");
     tarjetaActual.classList.add("col-12");
     parentContainer.appendChild(tarjetaActual);
     hermanoContainer.appendChild(tiposElement);
+    if (debilidad_maxima.length > 0) {
+      hermanoContainer.appendChild(sufreMuchoElement);
+    }
+    if (resistencia_maxima.length > 0) {
+      hermanoContainer.appendChild(resisteMuchoElement);
+    }
     if (vulnerable.length > 0) {
       hermanoContainer.appendChild(sufreElement);
     }
@@ -313,11 +400,17 @@ async function infoPokemon(pokemonName) {
     tarjetaActual.classList.add("col-12");
     parentContainer.appendChild(tarjetaActual);
     hermanoContainer.appendChild(tiposElement);
+    if (debilidad_maxima.length > 0) {
+      hermanoContainer.appendChild(sufreMuchoElement);
+    }
     if (vulnerable.length > 0) {
       hermanoContainer.appendChild(sufreElement);
     }
     if (resistente.length > 0) {
       hermanoContainer.appendChild(resisteElement);
+    }
+    if (resistencia_maxima.length > 0) {
+      hermanoContainer.appendChild(resisteMuchoElement);
     }
     if (immune.length > 0) {
       hermanoContainer.appendChild(immuneElement);

@@ -26,11 +26,21 @@
 .efectosTitle {
   /* /* font-weight: bold; */
   font-size: 1em;
-  margin: 1em;
+  /* margin: 1.5em; */
+
+  border-style: solid;
 }
 
 #resistencias {
-  font-size: 2em;
+  background-color: #d8dad7;
+  border-style: solid;
+  opacity: 90%;
+  /* border-radius: 10%; */
+  font-size: 1em;
+  height: 5.5rem;
+  border-color: #000000;
+  border-width: 1px;
+  margin: 10px;
 }
 
 ul {
@@ -42,7 +52,10 @@ ul {
   height: 30px;
   width: 30px;
   margin-right: 0.8em;
+  /* margin: 0.1em; */
   transition: 200ms all;
+  /* align-items: flex-start; */
+  justify-items: center;
 }
 
 .icon:hover {
@@ -148,9 +161,9 @@ ul {
 }
 
 ul {
-  columns: 2;
-  -webkit-columns: 2;
-  -moz-columns: 2;
+  columns: 1;
+  -webkit-columns: 5;
+  -moz-columns: 3;
 }
 
 .hidden {

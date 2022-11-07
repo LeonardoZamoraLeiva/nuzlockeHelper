@@ -273,7 +273,9 @@ async function infoPokemon(pokemonName) {
 
   if (findDuplicates(resistente)) {
     var duplicados = findDuplicates(resistente);
+    // console.log(duplicados);
     resistencia_maxima = [...new Set(findDuplicates(resistente))];
+    console.log(resistencia_maxima);
     for (let i = 0; i < duplicados.length; i++) {
       resistente = resistente.filter((item) => item != duplicados[i]);
     }
@@ -285,9 +287,7 @@ async function infoPokemon(pokemonName) {
 
   let filterEffects = (arr1, arr2) => {
     const filteredArray = arr1.filter((value) => arr2.includes(value));
-    console.log(filteredArray);
     if (arr1 == immune) {
-      console.log(immune);
     } else {
       for (var i = 0; i < filteredArray.length; i++) {
         for (var j = 0; j < arr1.length; j++) {
@@ -307,9 +307,8 @@ async function infoPokemon(pokemonName) {
   };
 
   filterEffects(resistente, vulnerable);
-  console.log(resistente);
-  console.log(immune);
   filterEffects(immune, vulnerable);
+  console.log(resistencia_maxima);
 
   // console.log(filteredArray);
   // console.log(resistente);
@@ -344,7 +343,8 @@ async function infoPokemon(pokemonName) {
     resisteElement.appendChild(resistePar);
     resisteElement.appendChild(makeUL(resistente));
   }
-  if (debilidad_maxima.length > 0) {
+  if (resistencia_maxima.length > 0) {
+    console.log("asd");
     let resisteMucho = document.createElement("h1");
     resisteMucho.setAttribute("class", "efectosTitle");
     resisteMucho.textContent = "Not very effective (x1/4)";
@@ -375,7 +375,6 @@ async function infoPokemon(pokemonName) {
 
   if (parentContainer.hasChildNodes()) {
     console.log(resistencia_maxima);
-
     parentContainer.replaceChildren("");
     hermanoContainer.replaceChildren("");
     tarjetaActual.classList.add("col-12");
@@ -384,14 +383,14 @@ async function infoPokemon(pokemonName) {
     if (debilidad_maxima.length > 0) {
       hermanoContainer.appendChild(sufreMuchoElement);
     }
-    if (resistencia_maxima.length > 0) {
-      hermanoContainer.appendChild(resisteMuchoElement);
-    }
     if (vulnerable.length > 0) {
       hermanoContainer.appendChild(sufreElement);
     }
     if (resistente.length > 0) {
       hermanoContainer.appendChild(resisteElement);
+    }
+    if (resistencia_maxima.length > 0) {
+      hermanoContainer.appendChild(resisteMuchoElement);
     }
     if (immune.length > 0) {
       hermanoContainer.appendChild(immuneElement);

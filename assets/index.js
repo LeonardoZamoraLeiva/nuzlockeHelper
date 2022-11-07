@@ -1,5 +1,6 @@
 let divPokemones = document.getElementById("pokemones");
 let htmlPage = document.getElementById("pagination-numbers");
+let dataDeploy = document.getElementById("dataDeploy");
 var parentContainer = document.getElementById("parentContainer");
 var hermanoContainer = document.getElementById("hermanoContainer");
 let page = 1;
@@ -75,17 +76,19 @@ let prevPage = () => {
   // console.log(page);
 };
 
-function recolectarPokemones(pagina) {
+function recolectarPokemones() {
   return (myPromise = new Promise((resolve) => {
     let pokemones = [];
     fetch(`https://pokeapi.co/api/v2/pokemon/?limit=1200`).then((response) =>
       response.json().then((data) => {
         data.results.forEach((pokemon) => {
-          let name = pokemon.name;
+          let name = pokemon.name.replace("-", " ");
           let urllist = pokemon.url.split("/");
+          let id = pokemon.url.split("pokemon/")[1].replace("/", "");
+
           let urlphoto = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${urllist[6]}.png`;
 
-          pokemones.push({ nombre: name, foto: urlphoto });
+          pokemones.push({ nombre: name, foto: urlphoto, id: id });
 
           if (pokemones.length == 1100) {
             resolve(pokemones);
@@ -122,12 +125,15 @@ function makeUL(array) {
 
 let crearTarjetas = (pokemon) => {
   // let nombre = pokemon.nombre;
-  if (pokemon.nombre.includes("-")) {
-    pokemon.nombre = pokemon.nombre.replace("-", "_");
-  }
+  // if (pokemon.nombre.includes("-")) {
+  //   pokemon.nombre = pokemon.nombre.replace("-", "_");
+  // }
   var tarjetaPokemon = document.createElement("div");
   tarjetaPokemon.setAttribute("class", "card text-center");
-  tarjetaPokemon.setAttribute("id", `${pokemon.nombre + pokemon.nombre}`);
+  tarjetaPokemon.setAttribute(
+    "id",
+    `${pokemon.nombre.replace(" ", "_") + pokemon.nombre.replace(" ", "_")}`
+  );
   var photoPokemon = document.createElement("img");
   photoPokemon.setAttribute("class", "card-img-top");
   photoPokemon.setAttribute("src", pokemon.foto);
@@ -137,25 +143,43 @@ let crearTarjetas = (pokemon) => {
 
   var pokemonNombre = document.createElement("p");
   pokemonNombre.setAttribute("class", "card-header card-title tituloPokemon");
-  pokemonNombre.setAttribute("id", `${pokemon.nombre}`);
-  pokemonNombre.textContent = pokemon.nombre.capitalize();
+  pokemonNombre.setAttribute("id", `${pokemon.nombre.replace(" ", "_")}`);
+
+  // pokemonNombre.textContent = `id`;
+  pokemonNombre.textContent = `${pokemon.nombre.capitalize()}`;
+
+  var cerrarTarjeta = document.createElement("i");
+  cerrarTarjeta.setAttribute(
+    "class",
+    "fa-solid fa-circle-xmark hidden iconStyle"
+  );
+  cerrarTarjeta.setAttribute("id", `${pokemon.nombre.replace(" ", "_")}cerrar`);
+  cerrarTarjeta.setAttribute(
+    "onClick",
+    `cerrarTarjeta(${pokemon.nombre.replace(" ", "_")})`
+  );
 
   var pokemonInfo = document.createElement("button");
   pokemonInfo.setAttribute("class", "btn btn-info");
-  pokemonInfo.setAttribute("data-bs-target", `#collapse${pokemon.nombre}`);
-  pokemonInfo.setAttribute("type", "button");
-  pokemonInfo.setAttribute("data-bs-toggle", "collapse");
-  pokemonInfo.setAttribute("aria-expanded", false);
-  pokemonInfo.setAttribute("aria-controls", `collapse${pokemon.nombre}`);
-  pokemonInfo.setAttribute("onClick", `infoPokemon(${pokemon.nombre})`);
+  // pokemonInfo.setAttribute("data-bs-target", `#collapse${pokemon.nombre}`);
+  // pokemonInfo.setAttribute("type", "button");
+  // pokemonInfo.setAttribute("data-bs-toggle", "collapse");
+  // pokemonInfo.setAttribute("aria-expanded", false);
+  // pokemonInfo.setAttribute("aria-controls", `collapse${pokemon.nombre}`);
+  pokemonInfo.setAttribute(
+    "onClick",
+    `infoPokemon(${pokemon.nombre.replace(" ", "_")})`
+  );
 
   pokemonInfo.textContent = "Info";
 
   var pokemonTypesInfo = document.createElement("div");
-  pokemonTypesInfo.setAttribute("class", "collapse mb-3");
-  pokemonTypesInfo.setAttribute("id", `collapse${pokemon.nombre}`);
+  // pokemonTypesInfo.setAttribute("class", "collapse mb-3");
+  // pokemonTypesInfo.setAttribute("id", `collapse${pokemon.nombre}`);
 
+  // elementoPokemonBody.appendChild(idPokemon);
   elementoPokemonBody.appendChild(pokemonNombre);
+  elementoPokemonBody.appendChild(cerrarTarjeta);
   elementoPokemonBody.appendChild(photoPokemon);
   elementoPokemonBody.appendChild(pokemonInfo);
   parentContainer.appendChild(pokemonTypesInfo);
@@ -173,7 +197,7 @@ let traerPokes = async () => {
     }
   });
 };
-traerPokes();
+// traerPokes();
 
 async function filtrarPokes() {
   let mainCard = document.getElementById("pokemones");
@@ -189,10 +213,12 @@ async function filtrarPokes() {
 }
 
 async function infoPokemon(pokemonName) {
-  var pokemonActual = pokemonName.textContent.replace("_", "-").toLowerCase();
+  console.log(pokemonName);
+  var pokemonActual = pokemonName.textContent.replace(" ", "_").toLowerCase();
+  // .replace("_", "-").toLowerCase();
 
   var tarjetaActual = document.getElementById(pokemonActual + pokemonActual);
-  console.log(tarjetaActual);
+  // .replace("-", "_") + pokemonActual.replace("-", "_")
 
   var tiposElement = document.createElement("div");
   tiposElement.setAttribute("class", "mb-2 tipos");
@@ -208,10 +234,7 @@ async function infoPokemon(pokemonName) {
   immuneElement.setAttribute("id", "resistencias");
 
   var typesInfo = document.createElement("div");
-  let thisCard = document.getElementById(
-    `collapse${pokemonActual.replace("-", "_")}`
-  );
-  let tipos = await recolectarTipos(pokemonActual);
+  let tipos = await recolectarTipos(pokemonActual.replace(" ", "-"));
 
   console.log(damageRelations);
   let vulnerable = [];
@@ -264,13 +287,31 @@ async function infoPokemon(pokemonName) {
 
   typesInfo.setAttribute("class", "my-3 text-center");
 
-  if (parentContainer.contains(tarjetaActual)) {
-    divPokemones.appendChild(tarjetaActual);
+  let cerrarTarjeta = document.getElementById(
+    `${pokemonActual.replace(" ", "_")}cerrar`
+  );
+  // console.log(pokemonActual.replace(" ", "_"));
+  // console.log(cerrarTarjeta);
+  cerrarTarjeta.classList.remove("hidden");
+
+  if (parentContainer.hasChildNodes()) {
+    parentContainer.replaceChildren("");
     hermanoContainer.replaceChildren("");
+    tarjetaActual.classList.add("col-12");
+    parentContainer.appendChild(tarjetaActual);
+    hermanoContainer.appendChild(tiposElement);
+    if (vulnerable.length > 0) {
+      hermanoContainer.appendChild(sufreElement);
+    }
+    if (resistente.length > 0) {
+      hermanoContainer.appendChild(resisteElement);
+    }
+    if (immune.length > 0) {
+      hermanoContainer.appendChild(immuneElement);
+    }
   } else {
     tarjetaActual.classList.add("col-12");
     parentContainer.appendChild(tarjetaActual);
-
     hermanoContainer.appendChild(tiposElement);
     if (vulnerable.length > 0) {
       hermanoContainer.appendChild(sufreElement);
@@ -286,13 +327,36 @@ async function infoPokemon(pokemonName) {
 
 let recolectarTipos = async (pokemonActual) => {
   let tipos = [];
-  await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonActual}`).then(
-    (response) =>
-      response.json().then((data) => {
-        data.types.forEach((tipo) => {
-          tipos.push(tipo.type.name);
-        });
-      })
+  await fetch(
+    `https://pokeapi.co/api/v2/pokemon/${pokemonActual.replace("_", "-")}`
+  ).then((response) =>
+    response.json().then((data) => {
+      data.types.forEach((tipo) => {
+        tipos.push(tipo.type.name);
+      });
+    })
   );
   return tipos;
+};
+
+let cerrarTarjeta = async (pokemonName) => {
+  var pokemonActual = pokemonName.textContent.toLowerCase();
+  var tarjetaActual = document.getElementById(pokemonActual);
+  let cerrarTarjeta = document.getElementById(
+    `${pokemonActual.replace(" ", "_")}cerrar`
+  );
+  parentContainer.replaceChildren("");
+  hermanoContainer.replaceChildren("");
+
+  cerrarTarjeta.classList.add("hidden");
+  let input = document.getElementById("myFilter");
+  console.log(input.value.length);
+  if (input.value.length <= 0) {
+    divPokemones.replaceChildren("");
+    traerPokes();
+    console.log("0");
+  } else {
+    console.log("mas de 0");
+    filtrarPokes();
+  }
 };

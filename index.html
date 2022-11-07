@@ -18,11 +18,17 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="assets/styles.css" />
     <title>Atrapalos ya!</title>
   </head>
-  <body>
+  <body onload="traerPokes()">
     <div class="container" id="originalContainer">
       <img
         src="assets/box-30-fullwidth.jpg"
@@ -64,7 +70,7 @@
           />
         </div>
       </div>
-      <div class="row justify-content-center mb-4">
+      <div class="row justify-content-center mb-4" id="dataDeploy">
         <div class="col col-6" id="parentContainer"></div>
         <div class="col col-6 text-center" id="hermanoContainer"></div>
       </div>
@@ -108,6 +114,7 @@
       integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
       crossorigin="anonymous"
     ></script>
+
     <script src="assets/index.js"></script>
   </body>
 </html>

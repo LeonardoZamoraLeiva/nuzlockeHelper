@@ -7,9 +7,10 @@
 }
 
 .tituloPokemon {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  /* display: flexbox; */
 }
 
 .tipos {
@@ -150,4 +151,15 @@ ul {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
+}
+
+.hidden {
+  visibility: hidden;
+}
+.iconStyle {
+  color: red;
+  font-size: 20px;
+  /* padding-left: 25em; */
+  margin-left: 90%;
+  margin-top: 5%;
 }

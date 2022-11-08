@@ -105,15 +105,15 @@ function makeUL(array) {
   list.setAttribute("class", "efectos");
   for (var i = 0; i < array.length; i++) {
     var imgTipo = document.createElement("img");
-    imgTipo.setAttribute("src", `assets/icons/${array[i]}.svg`);
+    imgTipo.setAttribute("src", `assets/icons_v2/${array[i]}.png`);
     imgTipo.setAttribute("class", `${array[i]} icon`);
     // Create the list item:
     var item = document.createElement("li");
-    item.setAttribute("class", "justify-content-between");
+    // item.setAttribute("class", "justify-content-between");
 
     // Set its contents:
     item.appendChild(imgTipo);
-    item.appendChild(document.createTextNode(array[i].capitalize()));
+    // item.appendChild(document.createTextNode(array[i].capitalize()));
 
     // Add it to the list:
     list.appendChild(item);

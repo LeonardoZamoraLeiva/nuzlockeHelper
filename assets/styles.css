@@ -7,7 +7,7 @@
 }
 
 .tituloPokemon {
-  font-size: 1.3vw;
+  font-size: 1vw;
   font-weight: bold;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   /* display: flexbox; */
@@ -34,13 +34,12 @@
 }
 
 #resistencias {
-  /* display: block; */
   justify-content: center;
-  background-color: #d8dad7;
+  background-color: #e9ede78b;
   border-style: solid;
   opacity: 90%;
   border-radius: 2%;
-  height: 8vw;
+  height: 9vw;
   border-color: #000000;
   border-width: 1px;
   margin: 5px;
@@ -191,7 +190,6 @@ ul {
 .iconStyle {
   color: red;
   font-size: 20px;
-  /* padding-left: 25em; */
   margin-left: 90%;
   margin-top: 5%;
 }

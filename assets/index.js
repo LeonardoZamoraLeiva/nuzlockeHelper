@@ -370,7 +370,6 @@ async function infoPokemon(pokemonName) {
   cerrarTarjeta.classList.remove("hidden");
 
   if (parentContainer.hasChildNodes()) {
-    console.log(resistencia_maxima);
     parentContainer.replaceChildren("");
     hermanoContainer.replaceChildren("");
     tarjetaActual.classList.add("col-12");

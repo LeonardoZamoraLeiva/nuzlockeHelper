@@ -274,7 +274,6 @@ async function infoPokemon(pokemonName) {
     var duplicados = findDuplicates(resistente);
     // console.log(duplicados);
     resistencia_maxima = [...new Set(findDuplicates(resistente))];
-    console.log(resistencia_maxima);
     for (let i = 0; i < duplicados.length; i++) {
       resistente = resistente.filter((item) => item != duplicados[i]);
     }
@@ -307,7 +306,6 @@ async function infoPokemon(pokemonName) {
 
   filterEffects(resistente, vulnerable);
   filterEffects(immune, vulnerable);
-  console.log(resistencia_maxima);
 
   // console.log(filteredArray);
   // console.log(resistente);
@@ -343,7 +341,6 @@ async function infoPokemon(pokemonName) {
     resisteElement.appendChild(makeUL(resistente));
   }
   if (resistencia_maxima.length > 0) {
-    console.log("asd");
     let resisteMucho = document.createElement("h1");
     resisteMucho.setAttribute("class", "efectosTitle");
     resisteMucho.textContent = "Not very effective (x1/4)";
@@ -440,13 +437,10 @@ let cerrarTarjeta = async (pokemonName) => {
 
   cerrarTarjeta.classList.add("hidden");
   let input = document.getElementById("myFilter");
-  console.log(input.value.length);
   if (input.value.length <= 0) {
     divPokemones.replaceChildren("");
     traerPokes();
-    console.log("0");
   } else {
-    console.log("mas de 0");
     filtrarPokes();
   }
 };

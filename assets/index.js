@@ -9,7 +9,7 @@ var pokemones = [];
 var damageRelations = [];
 
 let allTypes = async () => {
-  damageRelations = [];
+  // damageRelations = [];
   for (let i = 1; i < 19; i++) {
     await fetch(`https://pokeapi.co/api/v2/type/${i}`).then((response) => {
       response.json().then((data) => {
@@ -39,8 +39,10 @@ let allTypes = async () => {
 };
 
 let takeAllTypes = async () => {
-  damageRelations = await allTypes();
-  // console.log(damageRelations);
+  if (damageRelations.length == 0) {
+    damageRelations = await allTypes();
+    // console.log(damageRelations);
+  }
 };
 takeAllTypes();
 
@@ -149,13 +151,13 @@ let crearTarjetas = (pokemon) => {
   // pokemonNombre.textContent = `id`;
   pokemonNombre.textContent = `${pokemon.nombre.capitalize()}`;
 
-  var cerrarTarjeta = document.createElement("i");
-  cerrarTarjeta.setAttribute(
+  var botonCerrar = document.createElement("i");
+  botonCerrar.setAttribute(
     "class",
     "fa-solid fa-circle-xmark hidden iconStyle"
   );
-  cerrarTarjeta.setAttribute("id", `${pokemon.nombre.replace(" ", "_")}cerrar`);
-  cerrarTarjeta.setAttribute(
+  botonCerrar.setAttribute("id", `${pokemon.nombre.replace(" ", "_")}cerrar`);
+  botonCerrar.setAttribute(
     "onClick",
     `cerrarTarjeta(${pokemon.nombre.replace(" ", "_")})`
   );
@@ -180,7 +182,7 @@ let crearTarjetas = (pokemon) => {
 
   // elementoPokemonBody.appendChild(idPokemon);
   elementoPokemonBody.appendChild(pokemonNombre);
-  elementoPokemonBody.appendChild(cerrarTarjeta);
+  elementoPokemonBody.appendChild(botonCerrar);
   elementoPokemonBody.appendChild(photoPokemon);
   elementoPokemonBody.appendChild(pokemonInfo);
   parentContainer.appendChild(pokemonTypesInfo);
@@ -191,12 +193,14 @@ let crearTarjetas = (pokemon) => {
 };
 
 let traerPokes = async () => {
-  pokemones = await recolectarPokemones(page);
-  pokemones.forEach((pokemon, index) => {
-    if (index < page * 20 && index > page * 20 - 21) {
-      crearTarjetas(pokemon);
-    }
-  });
+  if (pokemones.length == 0) {
+    pokemones = await recolectarPokemones(page);
+    pokemones.forEach((pokemon, index) => {
+      if (index < page * 20 && index > page * 20 - 21) {
+        crearTarjetas(pokemon);
+      }
+    });
+  }
 };
 // traerPokes();
 
@@ -365,16 +369,16 @@ async function infoPokemon(pokemonName) {
 
   typesInfo.setAttribute("class", "my-3 text-center");
 
-  let cerrarTarjeta = document.getElementById(
+  let botonCerrar = document.getElementById(
     `${pokemonActual.replace(" ", "_")}cerrar`
   );
-  cerrarTarjeta.classList.remove("hidden");
+  botonCerrar.classList.remove("hidden");
 
   if (parentContainer.hasChildNodes()) {
-    // cerrarTarjeta(pokemonActual)
+    // cerrarTarjeta(pokemonName);
     parentContainer.replaceChildren("");
     hermanoContainer.replaceChildren("");
-    tarjetaActual.classList.add("col-12");
+    // tarjetaActual.classList.add("col-12");
     tarjetaActual.removeAttribute("style");
 
     parentContainer.appendChild(tarjetaActual);
@@ -395,7 +399,7 @@ async function infoPokemon(pokemonName) {
       hermanoContainer.appendChild(immuneElement);
     }
   } else {
-    tarjetaActual.classList.add("col-12");
+    // tarjetaActual.classList.add("col-12");
     tarjetaActual.removeAttribute("style");
     parentContainer.appendChild(tarjetaActual);
     hermanoContainer.appendChild(tiposElement);
@@ -432,14 +436,15 @@ let recolectarTipos = async (pokemonActual) => {
 };
 
 let cerrarTarjeta = async (pokemonName) => {
+  console.log(pokemonName);
   var pokemonActual = pokemonName.textContent.toLowerCase();
-  let cerrarTarjeta = document.getElementById(
+  let tarjetaCerrada = document.getElementById(
     `${pokemonActual.replace(" ", "_")}cerrar`
   );
   parentContainer.replaceChildren("");
   hermanoContainer.replaceChildren("");
 
-  cerrarTarjeta.classList.add("hidden");
+  tarjetaCerrada.classList.add("hidden");
   let input = document.getElementById("myFilter");
   if (input.value.length <= 0) {
     divPokemones.replaceChildren("");

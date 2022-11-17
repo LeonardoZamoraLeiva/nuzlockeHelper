@@ -2,29 +2,40 @@
   height: 1%;
 }
 
+#dataDeploy {
+  vertical-align: middle;
+}
+.pokemones {
+  justify-content: center;
+}
+
 .row {
   height: 10%;
 }
 
+.card {
+  display: flex;
+}
+
 .tituloPokemon {
-  font-size: 1vw;
+  /* display: flex; */
+  /* align-items: center; */
+  font-size: fit-content;
   font-weight: bold;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  /* display: flexbox; */
+  display: flexbox;
 }
 
 .tipos {
   font-weight: bold;
   background-color: beige;
-  font-size: 2vw;
+  font-size: 3vw;
   /* margin: 20; */
 }
 .efectos {
   justify-content: center;
-  /* vertical-align: bottom; */
-  /* font-size: 1em; */
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   flex-wrap: wrap;
   width: 100%;
   /* flex-direction: row; */
@@ -37,17 +48,18 @@
 }
 
 #resistencias {
+  /* display: contents; */
   justify-content: center;
   background-color: #e9ede78b;
   border-style: solid;
   opacity: 90%;
   border-radius: 2%;
-  height: 9vw;
-  /* width: fit-content; */
+  height: fit-content;
+  /* h: fit-content; */
   block-size: fit-content;
   border-color: #000000;
   border-width: 1px;
-  margin: 5px;
+  /* margin: 5px; */
 }
 
 #dataDeploy {
@@ -56,38 +68,20 @@
 
 ul {
   list-style-type: none;
+  margin-left: -2vw;
+  columns: 1;
+  -webkit-columns: 1;
+  -moz-columns: 1;
 }
 
 .icon {
-  /* display: flex; */
-  /* border-radius: 10%; */
-  /* height: 40px; */
-  /* width: 40px; */
-  /* margin-left: 0.5em; */
-  margin-right: 0.5em;
-  /* margin-top: 10%; */
-  /* transition: 200ms all; */
-  align-items: flex-start;
-  height: 2vw;
-  width: 8vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 14vw;
+  margin: 0.5vw;
+  /* margin-left: ; */
 }
-/* .card {
-  height: 20vw;
-  width: 8vw;
-} */
-
-/* .icon {
-  border-radius: 100%;
-  height: 40px;
-  width: 40px;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
-  margin-top: 10%;
-  transition: 200ms all;
-  /* align-items: flex-start; */
-/* justify-items: center; */
-/* font-size: 0.6vw; */
-/* } */
 
 .icon:hover {
   filter: saturate(10%);
@@ -96,9 +90,9 @@ ul {
 }
 
 .icon img {
-  height: 150%;
-  width: 150%;
-  margin: 120%;
+  height: 3vw;
+  width: 4vw;
+  margin: 3vw;
 }
 
 .bug {
@@ -189,12 +183,6 @@ ul {
 .water {
   background: #539ddf;
   box-shadow: 0 0 20px #539ddf;
-}
-
-ul {
-  columns: 1;
-  -webkit-columns: 1;
-  -moz-columns: 1;
 }
 
 .hidden {

@@ -26,6 +26,8 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="assets/styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <title>Atrapalos ya!</title>
   </head>
   <body onload="traerPokes()">
@@ -70,12 +72,20 @@
           />
         </div>
       </div>
-      <div class="row justify-content-center mb-4" id="dataDeploy">
+
+      <div
+        class="row justify-content-center align-items-center mb-4"
+        id="dataDeploy"
+      >
         <div class="col col-5" id="parentContainer"></div>
         <div class="col col-7 text-center" id="hermanoContainer"></div>
       </div>
-      <div class="row row-cols-xl-6 row-cols-md-4" id="pokemones"></div>
-      <div class="container container-fluid align-content-center my-3">
+
+      <div
+        class="row row-cols-xl-6 row-cols-md-4 justify-content-center"
+        id="pokemones"
+      ></div>
+      <div class="container container-fluid my-3">
         <div class="row justify-content-center">
           <div class="col-3 text-center">
             <button

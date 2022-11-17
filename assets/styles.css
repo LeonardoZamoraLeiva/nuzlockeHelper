@@ -18,8 +18,6 @@
 }
 
 .tituloPokemon {
-  /* display: flex; */
-  /* align-items: center; */
   font-size: fit-content;
   font-weight: bold;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -27,39 +25,35 @@
 }
 
 .tipos {
+  text-align: center;
   font-weight: bold;
   background-color: beige;
   font-size: 3vw;
-  /* margin: 20; */
 }
 .efectos {
   justify-content: center;
   display: flex;
-  /* flex-direction: row; */
   flex-wrap: wrap;
   width: 100%;
-  /* flex-direction: row; */
 }
 
 .efectosTitle {
+  text-align: center;
   font-size: 1.5vw;
   margin: 0.5em;
   border-style: solid;
 }
 
 #resistencias {
-  /* display: contents; */
   justify-content: center;
   background-color: #e9ede78b;
   border-style: solid;
   opacity: 90%;
   border-radius: 2%;
   height: fit-content;
-  /* h: fit-content; */
   block-size: fit-content;
   border-color: #000000;
   border-width: 1px;
-  /* margin: 5px; */
 }
 
 #dataDeploy {
@@ -80,7 +74,6 @@ ul {
   flex-wrap: wrap;
   width: 14vw;
   margin: 0.5vw;
-  /* margin-left: ; */
 }
 
 .icon:hover {

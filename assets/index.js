@@ -129,11 +129,12 @@ let crearTarjetas = (pokemon) => {
   //   pokemon.nombre = pokemon.nombre.replace("-", "_");
   // }
   var tarjetaPokemon = document.createElement("div");
-  tarjetaPokemon.setAttribute("class", "card text-center");
+  tarjetaPokemon.setAttribute("class", "card text-center ");
   tarjetaPokemon.setAttribute(
     "id",
     `${pokemon.nombre.replace(" ", "_") + pokemon.nombre.replace(" ", "_")}`
   );
+  tarjetaPokemon.setAttribute("style", "width:15rem");
   var photoPokemon = document.createElement("img");
   photoPokemon.setAttribute("class", "card-img-top");
   photoPokemon.setAttribute("src", pokemon.foto);
@@ -370,9 +371,12 @@ async function infoPokemon(pokemonName) {
   cerrarTarjeta.classList.remove("hidden");
 
   if (parentContainer.hasChildNodes()) {
+    // cerrarTarjeta(pokemonActual)
     parentContainer.replaceChildren("");
     hermanoContainer.replaceChildren("");
     tarjetaActual.classList.add("col-12");
+    tarjetaActual.removeAttribute("style");
+
     parentContainer.appendChild(tarjetaActual);
     hermanoContainer.appendChild(tiposElement);
     if (debilidad_maxima.length > 0) {
@@ -392,6 +396,7 @@ async function infoPokemon(pokemonName) {
     }
   } else {
     tarjetaActual.classList.add("col-12");
+    tarjetaActual.removeAttribute("style");
     parentContainer.appendChild(tarjetaActual);
     hermanoContainer.appendChild(tiposElement);
     if (debilidad_maxima.length > 0) {

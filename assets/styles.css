@@ -24,6 +24,9 @@
   /* vertical-align: bottom; */
   /* font-size: 1em; */
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
   /* flex-direction: row; */
 }
 
@@ -40,6 +43,8 @@
   opacity: 90%;
   border-radius: 2%;
   height: 9vw;
+  /* width: fit-content; */
+  block-size: fit-content;
   border-color: #000000;
   border-width: 1px;
   margin: 5px;

@@ -162,8 +162,10 @@ let crearTarjetas = (pokemon) => {
     `cerrarTarjeta(${pokemon.nombre.replace(" ", "_")})`
   );
 
-  var pokemonInfo = document.createElement("button");
+  var pokemonInfo = document.createElement("a");
   pokemonInfo.setAttribute("class", "btn btn-info");
+  pokemonInfo.setAttribute("href", "#dataDeploy");
+
   // pokemonInfo.setAttribute("data-bs-target", `#collapse${pokemon.nombre}`);
   // pokemonInfo.setAttribute("type", "button");
   // pokemonInfo.setAttribute("data-bs-toggle", "collapse");
@@ -194,7 +196,13 @@ let crearTarjetas = (pokemon) => {
 
 let traerPokes = async () => {
   if (pokemones.length == 0) {
-    pokemones = await recolectarPokemones(page);
+    pokemones = await recolectarPokemones();
+    pokemones.forEach((pokemon, index) => {
+      if (index < page * 20 && index > page * 20 - 21) {
+        crearTarjetas(pokemon);
+      }
+    });
+  } else {
     pokemones.forEach((pokemon, index) => {
       if (index < page * 20 && index > page * 20 - 21) {
         crearTarjetas(pokemon);
@@ -211,7 +219,9 @@ async function filtrarPokes() {
   }
   input = document.getElementById("myFilter");
   pokemones.forEach((pokemon) => {
-    if (pokemon.nombre.includes(input.value)) {
+    if (pokemon.nombre.includes(input.value.toLowerCase())) {
+      parentContainer.replaceChildren("");
+      hermanoContainer.replaceChildren("");
       crearTarjetas(pokemon);
     }
   });
@@ -323,32 +333,50 @@ async function infoPokemon(pokemonName) {
 
   if (debilidad_maxima.length > 0) {
     let sufreMucho = document.createElement("h1");
-    sufreMucho.setAttribute("class", "efectosTitle");
-    sufreMucho.textContent = "Super effective (x4)";
+    sufreMucho.setAttribute("class", "efectosTitle supperEffectivex2");
+    let sufreMuchoLogo = document.createElement("img");
+    sufreMuchoLogo.setAttribute("src", "assets/icons_v2/superefectivex4.png");
+    sufreMuchoLogo.setAttribute("class", "effectiveLogo my-2");
+    sufreMuchoElement.appendChild(sufreMuchoLogo);
+
     sufreMuchoElement.appendChild(sufreMucho);
     sufreMuchoElement.appendChild(makeUL(debilidad_maxima));
   }
 
   if (vulnerable.length > 0) {
     let sufrePar = document.createElement("h1");
-    sufrePar.setAttribute("class", "efectosTitle");
-    sufrePar.textContent = "Super effective (x2)";
+    sufrePar.setAttribute("class", "efectosTitle supperEffective");
+    let sufreLogo = document.createElement("img");
+    sufreLogo.setAttribute("src", "assets/icons_v2/superefectivex2.png");
+    sufreLogo.setAttribute("class", "effectiveLogo my-2");
+    sufreElement.appendChild(sufreLogo);
+
     sufreElement.appendChild(sufrePar);
     sufreElement.appendChild(makeUL(vulnerable));
   }
 
   if (resistente.length > 0) {
     let resistePar = document.createElement("h1");
-    resistePar.setAttribute("class", "efectosTitle");
+    resistePar.setAttribute("class", "efectosTitle notVeryEffective my-2");
     // resistePar.textContent = "Poco efectivo (x2)";
-    resistePar.textContent = "Not very effective (x0.5)";
+    let resisteLogo = document.createElement("img");
+    resisteLogo.setAttribute("src", "assets/icons_v2/notveryefectivemitad.png");
+    resisteLogo.setAttribute("class", "effectiveLogo my-2");
+
+    resisteElement.appendChild(resisteLogo);
     resisteElement.appendChild(resistePar);
     resisteElement.appendChild(makeUL(resistente));
   }
   if (resistencia_maxima.length > 0) {
     let resisteMucho = document.createElement("h1");
-    resisteMucho.setAttribute("class", "efectosTitle");
-    resisteMucho.textContent = "Not very effective (x1/4)";
+    resisteMucho.setAttribute("class", "efectosTitle notVeryEffectivex2 my-2");
+    let resisteMuchoLogo = document.createElement("img");
+    resisteMuchoLogo.setAttribute(
+      "src",
+      "assets/icons_v2/notveryefectivecuarto.png"
+    );
+    resisteMuchoLogo.setAttribute("class", "effectiveLogo my-2");
+    resisteMuchoElement.appendChild(resisteMuchoLogo);
     resisteMuchoElement.appendChild(resisteMucho);
     resisteMuchoElement.appendChild(makeUL(resistencia_maxima));
   }
@@ -356,7 +384,10 @@ async function infoPokemon(pokemonName) {
   if (immune.length > 0) {
     let immunePar = document.createElement("h1");
     immunePar.setAttribute("class", "efectosTitle");
-    immunePar.textContent = "Immunity";
+    let immuneLogo = document.createElement("img");
+    immuneLogo.setAttribute("src", "assets/icons_v2/immune.png");
+    immuneLogo.setAttribute("class", "effectiveLogo my-2");
+    immuneElement.appendChild(immuneLogo);
     immuneElement.appendChild(immunePar);
     immuneElement.appendChild(makeUL(immune));
   }

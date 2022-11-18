@@ -5,6 +5,12 @@
 #dataDeploy {
   vertical-align: middle;
 }
+
+.effectiveLogo {
+  height: 5vw;
+  margin-left: 2vw;
+}
+
 .pokemones {
   justify-content: center;
 }
@@ -28,29 +34,35 @@
   text-align: center;
   font-weight: bold;
   background-color: beige;
-  font-size: 3vw;
+  font-size: 2vw;
 }
 .efectos {
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  /* max-height: 2vw; */
 }
 
 .efectosTitle {
-  text-align: center;
+  block-size: fit-content;
+
   font-size: 1.5vw;
   margin: 0.5em;
-  border-style: solid;
+  /* border-style: solid; */
 }
 
 #resistencias {
-  justify-content: center;
+  display: flex;
+  flex-direction: initial;
+  align-items: center;
+  /* vertical-align: middle; */
+
   background-color: #e9ede78b;
   border-style: solid;
   opacity: 90%;
   border-radius: 2%;
-  height: fit-content;
+  /* height: 10vw; */
   block-size: fit-content;
   border-color: #000000;
   border-width: 1px;
@@ -72,8 +84,9 @@ ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 14vw;
-  margin: 0.5vw;
+  width: 10vw;
+  margin-left: 1vw;
+  margin-top: 1vw;
 }
 
 .icon:hover {
